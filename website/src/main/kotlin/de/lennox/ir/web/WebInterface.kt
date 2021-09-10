@@ -28,7 +28,10 @@ fun jsonConfig(configFile: File): JsonConfig =
 class WebInterface {
   private var jsonConfig by jsonConfig(
     File("config.json"),
-    WIConfig("https://intave.de")
+    WIConfig(
+      8080,
+      "https://intave.de"
+    )
   )
   private val baseHtmlFile: String = String(JavalinServer::class.java.getResourceAsStream("/index.html")?.readBytes()!!)
   private var driver = MongoDriver("localhost", 27017)
@@ -37,6 +40,15 @@ class WebInterface {
     // Default endpoint
     get("/") {
       it.redirect(jsonConfig.redirectionLink)
+    }
+    get("/authorize/:password/:id") {
+      val logId = it.pathParam("id")
+      val password = it.pathParam("password")
+      if (logId.isEmpty() || password.isEmpty()) {
+        it.redirect(jsonConfig.redirectionLink)
+        return@get
+      }
+      // TODO: Handle passwords
     }
     // Endpoint for viewing logs in the browser
     get("/log/:id") {
@@ -64,7 +76,7 @@ class WebInterface {
   }
 
   fun start() {
-    app.start()
+    app.start(jsonConfig.port)
   }
 }
 

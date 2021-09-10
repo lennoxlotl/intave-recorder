@@ -1,0 +1,126 @@
+<link href="https://pvinis.github.io/iosevka-webfont/7.0.2/iosevka.css" rel="stylesheet"/>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126481831-1"></script>
+</head>
+
+<style>
+    body {
+        background-color: #0D1117;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif !important;
+    }
+
+    .main {
+        margin-top: 50px;
+    }
+
+    .card {
+        border-style: solid;
+        border-color: #21262D;
+        border-width: 2px;
+        padding: 30px 30px;
+        border-radius: 10px;
+        background-color: #0D1117;
+        margin-bottom: 25px;
+        color: white;
+        text-align: center;
+        filter: drop-shadow(7px 7px 12px #000);
+        transition: 0.3s;
+        z-index: 98;
+    }
+
+    .cards {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .line {
+        transform: translateX(-30px);
+        padding-right: 60px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        border-color: #21262D;
+        border-style: solid;
+        border-width: 1px;
+    }
+
+    .mar0 {
+        margin: 0;
+    }
+
+    .pad1 {
+        padding-bottom: 10px;
+    }
+
+    .left {
+        text-align: left;
+        width: 100%;
+    }
+
+    input[type="text"] {
+        border-width: 0;
+        border-radius: 5px;
+        padding: 10px 10px;
+        background-color: #070b0e;
+        color: white;
+        transition: ease-in-out 0.2s;
+    }
+
+    input[type="text"]:focus {
+        background-color: #171c23;
+        outline: black;
+    }
+
+    input[type="button"] {
+        border-style: solid;
+        border-color: #21262D;
+        border-width: 1px;
+        padding: 10px 10px;
+        min-width: 110px;
+        border-radius: 5px;
+        background-color: #0D1117;
+        color: white;
+        font-size: 15px;
+        transition: linear 0.1s;
+    }
+
+    input[type="button"]:focus {
+        border-color: #aaaaaa;
+        outline: none;
+    }
+
+</style>
+
+<script>
+    let requestedLogId = "%logId%"
+    const redirection = "%logSiteUrl%/authorize/"
+
+    function login() {
+        let password = document.getElementById("password-box").value
+        window.location.href = redirection + password + "/" + requestedLogId
+    }
+</script>
+
+<body>
+    <div class="main">
+        <div class="cards">
+            <div class="card">
+                <h1 class="mar0 left">Intave Recorder</h1>
+                <p class="mar0 pad1 left">Authorization</p>
+                <div class="line"></div>
+                <input id="password-box" type="text" placeholder="Password">
+                <br>
+                <input style="margin-top: 15px" type="button" value="Login" onclick="login()">
+            </div>
+        </div>
+    </div>
+</body>
