@@ -1,0 +1,5 @@
+rootProject.name = 'Intave Recorder'
+include 'website'
+include 'database'
+include 'plugin'
+

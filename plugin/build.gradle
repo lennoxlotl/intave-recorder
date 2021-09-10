@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.5.0'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        content {
+            includeGroup 'org.bukkit'
+            includeGroup 'org.spigotmc'
+        }
+    }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
+    compileOnly fileTree(dir: "/libs", include: "*.jar")
+}
+
+bukkit {
+    name = "IntaveRecorder"
+    version = parent.version
+    description = 'Intave Recorder gives server owners the ability to upload intave violations of an in-game player to a database. This can be very useful for determining false flags more easily.'
+    author = "Lennox"
+    main = "de.lennox.ir.IRPlugin"
+
+    softDepend = ['Intave']
+
+    commands {
+        recorder {
+            description = "Command for the Intave Recorder plugin"
+            aliases = ["ir"]
+        }
+    }
+}
