@@ -7,5 +7,5 @@ repositories {
 }
 
 dependencies {
-    implementation "org.mongodb:mongodb-driver:3.12.7"
+    extract 'org.mongodb:mongodb-driver:3.12.10'
 }
