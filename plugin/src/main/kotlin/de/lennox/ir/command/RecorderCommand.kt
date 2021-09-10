@@ -17,11 +17,6 @@ class RecorderCommand : Command("recorder.commands", "recorder") {
           sender.sendMessage("$prefix §cUnable to receive the violations of the player!")
           return@subcommand
         }
-        // Debug (remove later)
-        println("Violations for ${player.name}:")
-        violations.forEach {
-          println(it.formatFor(player))
-        }
         // TODO: Implement database and upload logs
         sender.sendMessage("$prefix §7Successfully uploaded the violation log of the player §d${player.name}§7.")
         violations.clear()
