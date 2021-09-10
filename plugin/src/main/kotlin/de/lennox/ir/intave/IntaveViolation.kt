@@ -13,7 +13,7 @@ data class IntaveViolation(
 ) {
 
   fun formatFor(player: Player): String {
-    return "&c${player.name} &7violated &c$check &7vl: &c+$addedVl &7(&c$vlBefore&7->&c$vl&7)${if (message.isNotEmpty()) " &7details: &c$message" else ""} &7trust: ${trustFactor.coloredBaseName()}"
+    return "&c${player.name} &7violated &b$check &7vl: &c+$addedVl &7($vlBefore->$vl)${if (message.isNotEmpty()) " &7details: $message" else ""} &7trust: ${trustFactor.coloredBaseName()}"
   }
 
 }
