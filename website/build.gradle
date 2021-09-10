@@ -7,4 +7,9 @@ repositories {
 }
 
 dependencies {
+    extract project(":database")
+    extract "io.javalin:javalin:3.13.11"
+    extract 'com.google.code.gson:gson:2.8.8'
+    extract 'org.slf4j:slf4j-api:2.0.0-alpha5'
+    extract 'org.slf4j:slf4j-simple:2.0.0-alpha5'
 }

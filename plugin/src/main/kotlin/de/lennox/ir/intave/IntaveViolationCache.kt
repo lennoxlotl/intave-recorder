@@ -2,6 +2,7 @@ package de.lennox.ir.intave
 
 import de.lennox.ir.event.EventCallback
 import de.lennox.ir.event.Events
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -22,6 +23,9 @@ class IntaveViolationCache : Events {
 
   init {
     intaveViolationCache = this
+    Bukkit.getOnlinePlayers().forEach {
+      cachedViolations.putIfAbsent(it, mutableListOf())
+    }
   }
 
   private val receiveJoin = EventCallback<PlayerJoinEvent> {

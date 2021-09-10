@@ -1,0 +1,198 @@
+<link href="https://pvinis.github.io/iosevka-webfont/7.0.2/iosevka.css" rel="stylesheet"/>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126481831-1"></script>
+</head>
+
+<style>
+    body {
+        background-color: #0D1117;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .main {
+        margin-top: 50px;
+    }
+
+    .card {
+        border-style: solid;
+        border-color: #21262D;
+        border-width: 2px;
+        padding: 30px 30px;
+        border-radius: 10px;
+        background-color: #0D1117;
+        margin-bottom: 25px;
+        color: white;
+        text-align: center;
+        filter: drop-shadow(7px 7px 12px #000);
+        transition: 0.3s;
+        z-index: 98;
+    }
+
+    .w66 {
+        width: 66%;
+    }
+
+    .cards {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .line {
+        transform: translateX(-30px);
+        padding-right: 60px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        border-color: #21262D;
+        border-style: solid;
+        border-width: 1px;
+    }
+
+    .image {
+        transform: translateY(-10px);
+        float: right;
+        max-width: 75px;
+        border-radius: 50%;
+        margin: 0;
+    }
+
+    .mar0 {
+        margin: 0;
+    }
+
+    .pad1 {
+        padding-bottom: 10px;
+    }
+
+    .verbose {
+        border-radius: 10px;
+        border-color: #21262D;
+        background-color: #0D1117;
+        filter: drop-shadow(0px 0px 6px #000);
+        border-style: solid;
+        border-width: 1px;
+        margin-top: 30px;
+        padding: 15px 0;
+        font-family: 'Iosevka Web', serif;
+    }
+
+    .verboseText {
+        padding: 0 30px;
+    }
+
+    .left {
+        text-align: left;
+        width: 100%;
+    }
+</style>
+
+<script>
+
+    window.onload = function () {
+        replaceColorCodes(document.getElementById('logToReplace'));
+    }
+
+    String.prototype.splice = function (idx, rem, str) {
+        return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+    };
+
+    function replaceColorCodes(elementId) {
+        elementId.innerHTML = elementId.innerHTML.replaceAll("<br>", "[temporaryBr]");
+        let i;
+        let text = elementId.textContent;
+        text = text.replaceAll("[temporaryBr]", "<br>")
+        const alphabet = "abcdefghijklmnopqrstuvwxyz";
+        const awaitedPositions = [];
+        let awaitColorCode = false;
+        for (i = 0; i < text.length; i++) {
+            let charAt = text[i];
+            if (charAt === '&') {
+                awaitColorCode = true;
+            } else if (awaitColorCode) {
+                awaitedPositions.push([i, charAt]);
+                awaitColorCode = false;
+            }
+        }
+        let add = 0;
+        for (i = 0; i < awaitedPositions.length; i++) {
+            let chars = awaitedPositions[i];
+            let position = chars[0];
+            let color = chars[1];
+            let appendedString = "<span style='color: " + colorKeyOf(color) + "'>";
+
+            text = text.splice(add + position - 1, 0, "</span>");
+            text = text.splice(add + position + 1 + 7, 0, appendedString);
+            add = add + appendedString.length + 7;
+        }
+        for (i = 0; i <= 9; i++) {
+            text = text.replaceAll("&" + i, "")
+        }
+        for (i = 0; i <= 26; i++) {
+            text = text.replaceAll("&" + alphabet.charAt(i), "")
+        }
+        elementId.innerHTML = text;
+    }
+
+    function colorKeyOf(code) {
+        switch (code) {
+            case "0":
+                return "#000000";
+            case "1":
+                return "#0000AA";
+            case "2":
+                return "#00AA00";
+            case "3":
+                return "#00AAAA";
+            case "4":
+                return "#AA0000";
+            case "5":
+                return "#AA00AA";
+            case "6":
+                return "#FFAA00";
+            case "7":
+                return "#AAAAAA";
+            case "8":
+                return "#555555";
+            case "9":
+                return "#5555FF";
+            case "a":
+                return "#55FF55";
+            case "b":
+                return "#55FFFF";
+            case "c":
+                return "#FF5555";
+            case "d":
+                return "#FF55FF";
+            case "e":
+                return "#FFFF55";
+            case "f":
+                return "#FFFFFF";
+        }
+        return "white";
+    }
+</script>
+
+<body>
+<div class="main">
+    <div class="cards">
+        <div class="card w66">
+            <h1 class="mar0 left">Intave Logger
+                <image class="image" src="https://crafatar.com/avatars/%playerUUID%?overlay=true"></image>
+            </h1>
+            <p class="mar0 pad1 left">Logs for %playerName%</p>
+            <div class="line"></div>
+            <div class="mar0 verbose left">
+                <p class="verboseText" id="logToReplace">%log%</p>
+            </div>
+        </div>
+    </div>
+</body>
