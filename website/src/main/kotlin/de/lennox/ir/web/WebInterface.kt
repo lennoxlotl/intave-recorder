@@ -40,10 +40,10 @@ class WebInterface {
     )
   )
   private val baseHtmlFile: String = String(JavalinServer::class.java.getResourceAsStream("/index.html")?.readBytes()!!)
-  private var driver = MongoDriver("localhost", 27017)
   private val executor = Executors.newSingleThreadExecutor()
 
   val commandRepository = CommandRepository()
+  var driver = MongoDriver("localhost", 27017)
 
   private val app = Javalin.create().routes {
     // Default endpoint

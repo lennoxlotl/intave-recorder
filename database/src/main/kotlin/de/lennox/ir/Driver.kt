@@ -44,4 +44,12 @@ interface Driver {
    */
   fun passwordByFingerprint(id: String): PasswordEntity?
 
+  /**
+   * Deletes a password by its id
+   *
+   * @param id The password id
+   * @return The success state of the deletion
+   */
+  fun deletePasswordBy(id: String): Boolean
+
 }

@@ -88,4 +88,13 @@ class MongoDriver(
     ).first()
   }
 
+  override fun deletePasswordBy(id: String): Boolean {
+    return passwordCollection.deleteOne(
+      PasswordQuery(
+        PasswordQueryType.PASSWORD_ID,
+        id
+      ).findQuery()
+    ).wasAcknowledged()
+  }
+
 }
