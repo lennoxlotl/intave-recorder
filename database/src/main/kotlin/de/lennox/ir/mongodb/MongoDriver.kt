@@ -7,9 +7,7 @@ import com.mongodb.ServerAddress
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import de.lennox.ir.Driver
-import de.lennox.ir.entity.RecordEntity
-import de.lennox.ir.entity.RecordQuery
-import de.lennox.ir.entity.RecordQueryType
+import de.lennox.ir.entity.*
 import org.bson.codecs.configuration.CodecRegistries
 import org.bson.codecs.pojo.PojoCodecProvider
 
@@ -21,6 +19,7 @@ class MongoDriver(
   private val mongoClient: MongoClient
   private val mongoDatabase: MongoDatabase
   private val recordCollection: MongoCollection<RecordEntity>
+  private val passwordCollection: MongoCollection<PasswordEntity>
 
   init {
     val codecRegistry = CodecRegistries.fromRegistries(
@@ -51,6 +50,7 @@ class MongoDriver(
     }
     mongoDatabase = mongoClient.getDatabase("intaverecorder").withCodecRegistry(codecRegistry)
     recordCollection = mongoDatabase.getCollection("records", RecordEntity::class.java).withCodecRegistry(codecRegistry)
+    passwordCollection = mongoDatabase.getCollection("passwords", PasswordEntity::class.java).withCodecRegistry(codecRegistry)
   }
 
   override fun pushRecord(recordEntity: RecordEntity) {
@@ -61,6 +61,28 @@ class MongoDriver(
     return recordCollection.find(
       RecordQuery(
         RecordQueryType.RECORD_ID,
+        id
+      ).findQuery()
+    ).first()
+  }
+
+  override fun pushPassword(passwordEntity: PasswordEntity) {
+    passwordCollection.insertOne(passwordEntity)
+  }
+
+  override fun passwordByPassword(id: String): PasswordEntity? {
+    return passwordCollection.find(
+      PasswordQuery(
+        PasswordQueryType.PASSWORD_ID,
+        id
+      ).findQuery()
+    ).first()
+  }
+
+  override fun passwordByFingerprint(id: String): PasswordEntity? {
+    return passwordCollection.find(
+      PasswordQuery(
+        PasswordQueryType.LINKED_FINGERPRINT,
         id
       ).findQuery()
     ).first()
