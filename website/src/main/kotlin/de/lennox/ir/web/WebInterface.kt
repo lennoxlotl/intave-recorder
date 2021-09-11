@@ -18,9 +18,6 @@ val gson: Gson = GsonBuilder()
   .setPrettyPrinting()
   .create()
 
-fun spigotPluginPath(pluginName: String, fileName: String): File =
-  File("plugins/$pluginName/$fileName")
-
 inline fun <reified T> jsonConfig(configPath: File, default: T): DelegateJsonConfig<T> =
   DelegateJsonConfig(configPath, T::class.java, default)
 
@@ -34,7 +31,15 @@ class WebInterface {
     File("config.json"),
     WIConfig(
       8080,
-      "https://intave.de"
+      "https://intave.de",
+      MongoDBConfig(
+        "",
+        0,
+        false,
+        "",
+        "",
+        ""
+      )
     )
   )
   private val baseHtmlFile: String = String(JavalinServer::class.java.getResourceAsStream("/index.html")?.readBytes()!!)
@@ -43,6 +48,7 @@ class WebInterface {
   private val executor = Executors.newSingleThreadExecutor()
 
   val commandRepository = CommandRepository()
+
   // TODO: Config for the database
   var driver = MongoDriver("localhost", 27017)
 

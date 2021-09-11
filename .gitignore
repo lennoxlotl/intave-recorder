@@ -2,3 +2,7 @@
 /.gradle/
 /plugin/build/
 /.idea/
+/build/
+/database/build/
+/website/build/
+config.json
