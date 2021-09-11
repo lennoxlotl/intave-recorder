@@ -13,6 +13,12 @@ abstract class Command(
 ) : CommandExecutor {
   private val subcommands = HashMap<String, (sender: CommandSender, args: Array<out String>) -> Unit>()
 
+  /**
+   * Dispatches the command internally
+   *
+   * @param sender The entity (or console) which dispatched the command
+   * @param args The arguments supplied for the command dispatching
+   */
   abstract fun dispatch(
     sender: CommandSender,
     args: Array<out String>
@@ -47,6 +53,12 @@ abstract class Command(
     return true
   }
 
+  /**
+   * Creates a new subcommand
+   *
+   * @param name The name of the subcommand, this also indicates how and when the command will be called
+   * @param func The function which will be called on subcommand dispatch
+   */
   fun subcommand(
     name: String,
     func: (sender: CommandSender, args: Array<out String>) -> Unit

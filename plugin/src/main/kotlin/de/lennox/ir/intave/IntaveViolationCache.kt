@@ -23,17 +23,19 @@ class IntaveViolationCache : Events {
 
   init {
     intaveViolationCache = this
+    // Add all currently connected players to the violation cache
     Bukkit.getOnlinePlayers().forEach {
       cachedViolations.putIfAbsent(it, mutableListOf())
     }
   }
 
   private val receiveJoin = EventCallback<PlayerJoinEvent> {
+    // Add the connected player to the violation cache
     cachedViolations.putIfAbsent(player, mutableListOf())
   }
 
   private val receiveQuit = EventCallback<PlayerQuitEvent> {
+    // Remove the disconnected player from the violation cache
     cachedViolations.remove(player)
   }
-
 }

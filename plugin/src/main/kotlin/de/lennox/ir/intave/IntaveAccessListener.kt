@@ -6,6 +6,7 @@ import de.lennox.ir.event.Events
 
 class IntaveAccessListener : Events {
   val receiveViolation = EventCallback<IntaveViolationEvent> {
+    // Create a new violation entity with all necessary information
     val violation = IntaveViolation(
       violationLevelAfterViolation(),
       violationLevelBeforeViolation(),
@@ -14,6 +15,7 @@ class IntaveAccessListener : Events {
       playerAccess().trustFactor(),
       message()
     )
+    // Push the violation into the player's violation cache
     player().putViolation(violation)
   }
 }
