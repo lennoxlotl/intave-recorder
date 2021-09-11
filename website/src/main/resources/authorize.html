@@ -102,11 +102,10 @@
 
 <script>
     let requestedLogId = "%logId%"
-    const redirection = "%logSiteUrl%/authorize/"
 
     function login() {
         let password = document.getElementById("password-box").value
-        window.location.href = redirection + password + "/" + requestedLogId
+        window.location.href = "/authorize/" + password + "/" + requestedLogId
     }
 </script>
 

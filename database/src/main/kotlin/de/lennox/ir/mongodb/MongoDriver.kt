@@ -88,6 +88,15 @@ class MongoDriver(
     ).first()
   }
 
+  override fun passwordBy(password: String): PasswordEntity? {
+    return passwordCollection.find(
+      PasswordQuery(
+        PasswordQueryType.PASSWORD,
+        password
+      ).findQuery()
+    ).first()
+  }
+
   override fun deletePasswordBy(id: String): Boolean {
     return passwordCollection.deleteOne(
       PasswordQuery(
@@ -95,6 +104,19 @@ class MongoDriver(
         id
       ).findQuery()
     ).wasAcknowledged()
+  }
+
+  override fun updatePasswordFingerprint(id: String, fingerprint: String) {
+    passwordCollection.updateOne(
+      PasswordQuery(
+        PasswordQueryType.PASSWORD_ID,
+        id
+      ).findQuery(),
+      PasswordQuery(
+        PasswordQueryType.LINKED_FINGERPRINT,
+        fingerprint
+      ).updateQuery()
+    )
   }
 
 }

@@ -45,11 +45,27 @@ interface Driver {
   fun passwordByFingerprint(id: String): PasswordEntity?
 
   /**
+   * Fetches a password by the password attatched to it
+   *
+   * @param password The password
+   * @return Password entity found in the database or null
+   */
+  fun passwordBy(password: String): PasswordEntity?
+
+  /**
    * Deletes a password by its id
    *
    * @param id The password id
    * @return The success state of the deletion
    */
   fun deletePasswordBy(id: String): Boolean
+
+  /**
+   * Updates a passwords linked fingerprint
+   *
+   * @param id The password id
+   * @param fingerprint The fingerprint which will be linked
+   */
+  fun updatePasswordFingerprint(id: String, fingerprint: String)
 
 }

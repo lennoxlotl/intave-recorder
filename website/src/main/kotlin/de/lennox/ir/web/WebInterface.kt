@@ -12,7 +12,7 @@ import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.get
 import io.javalin.core.JavalinServer
 import java.io.File
-import java.util.concurrent.ExecutorService
+import java.util.*
 import java.util.concurrent.Executors
 
 
@@ -40,6 +40,8 @@ class WebInterface {
     )
   )
   private val baseHtmlFile: String = String(JavalinServer::class.java.getResourceAsStream("/index.html")?.readBytes()!!)
+  private val baseLoginFile: String =
+    String(JavalinServer::class.java.getResourceAsStream("/authorize.html")?.readBytes()!!)
   private val executor = Executors.newSingleThreadExecutor()
 
   val commandRepository = CommandRepository()
@@ -57,14 +59,33 @@ class WebInterface {
         it.redirect(jsonConfig.redirectionLink)
         return@get
       }
-      // TODO: Handle passwords
+      val passwordEntity = driver.passwordBy(password) ?: run {
+        it.redirect(jsonConfig.redirectionLink)
+        return@get
+      }
+      val fingerprint = UUID.randomUUID().toString().replace("-", "")
+      it.cookieStore("rfp", fingerprint)
+      driver.updatePasswordFingerprint(passwordEntity.passwordId, fingerprint)
+      it.redirect("/log/$logId")
     }
     // Endpoint for viewing logs in the browser
     get("/log/:id") {
-      // TODO: Password authorization through mongodb
       val logId = it.pathParam("id")
       if (logId.isEmpty()) {
         it.redirect(jsonConfig.redirectionLink)
+        return@get
+      }
+      val fingerprint = it.cookieStore<String>("rfp")
+      if (fingerprint.isEmpty()) {
+        val createdHtml = baseLoginFile
+          .replace("%logId%", logId)
+        it.html(createdHtml)
+        return@get
+      }
+      driver.passwordByFingerprint(fingerprint) ?: run {
+        val createdHtml = baseLoginFile
+          .replace("%logId%", logId)
+        it.html(createdHtml)
         return@get
       }
       val log = driver.recordBy(logId) ?: run {

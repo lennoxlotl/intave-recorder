@@ -12,4 +12,5 @@ dependencies {
     extract 'com.google.code.gson:gson:2.8.8'
     extract 'org.slf4j:slf4j-api:2.0.0-alpha5'
     extract 'org.slf4j:slf4j-simple:2.0.0-alpha5'
+    extract "com.fasterxml.jackson.core:jackson-databind:2.10.5"
 }
