@@ -3,13 +3,11 @@ package de.lennox.ir.web.command
 import de.lennox.ir.web.ANSI_RED
 import de.lennox.ir.web.ANSI_RESET
 import de.lennox.ir.web.webinterface
-import java.util.*
 
 private const val PRE_FORMAT = "> "
 
 class CommandDispatcher : Runnable {
   override fun run() {
-    val scanner = Scanner(System.`in`)
     val commands = webinterface.commandRepository.repository
     print(PRE_FORMAT)
     while (true) run loop@{
