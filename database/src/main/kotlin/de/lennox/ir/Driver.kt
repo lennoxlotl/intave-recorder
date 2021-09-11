@@ -1,11 +1,9 @@
 package de.lennox.ir
 
 import de.lennox.ir.entity.PasswordEntity
-import de.lennox.ir.entity.PasswordQuery
 import de.lennox.ir.entity.RecordEntity
 
 interface Driver {
-
   /**
    * Pushes a Record into the selected database type
    *
@@ -67,5 +65,4 @@ interface Driver {
    * @param fingerprint The fingerprint which will be linked
    */
   fun updatePasswordFingerprint(id: String, fingerprint: String)
-
 }

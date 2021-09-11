@@ -1,4 +1,4 @@
-package de.lennox.ir.entity
+package de.lennox.ir.mongodb.query
 
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Updates
@@ -9,16 +9,14 @@ import org.bson.conversions.Bson
 class RecordQuery(
   private val type: RecordQueryType,
   private val obj: Any
-) {
-
-  fun updateQuery(): Bson {
+): Query {
+  override fun updateQuery(): Bson {
     return Updates.set(type.type, type.converter.convert(obj))
   }
 
-  fun findQuery(): Bson {
+  override fun findQuery(): Bson {
     return Filters.eq(type.type, type.converter.convert(obj))
   }
-
 }
 
 enum class RecordQueryType(

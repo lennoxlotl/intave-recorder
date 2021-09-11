@@ -8,6 +8,10 @@ import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import de.lennox.ir.Driver
 import de.lennox.ir.entity.*
+import de.lennox.ir.mongodb.query.PasswordQuery
+import de.lennox.ir.mongodb.query.PasswordQueryType
+import de.lennox.ir.mongodb.query.RecordQuery
+import de.lennox.ir.mongodb.query.RecordQueryType
 import org.bson.codecs.configuration.CodecRegistries
 import org.bson.codecs.pojo.PojoCodecProvider
 
@@ -21,6 +25,14 @@ class MongoDriver(
   private val recordCollection: MongoCollection<RecordEntity>
   private val passwordCollection: MongoCollection<PasswordEntity>
 
+  /**
+   * Initializes the Mongo Database driver
+   * including the collections
+   *
+   * @param host The hostname of the database
+   * @param port The port of the database
+   * @param credential The login data of the database (optional)
+   */
   init {
     val codecRegistry = CodecRegistries.fromRegistries(
       MongoClient.getDefaultCodecRegistry(),
@@ -118,5 +130,4 @@ class MongoDriver(
       ).updateQuery()
     )
   }
-
 }
