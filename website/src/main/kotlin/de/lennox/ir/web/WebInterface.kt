@@ -4,12 +4,16 @@ package de.lennox.ir.web
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import de.lennox.ir.mongodb.MongoDriver
+import de.lennox.ir.web.command.CommandDispatcher
+import de.lennox.ir.web.command.CommandRepository
 import de.lennox.ir.web.json.DelegateJsonConfig
 import de.lennox.ir.web.json.JsonConfig
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.get
 import io.javalin.core.JavalinServer
 import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 val gson: Gson = GsonBuilder()
@@ -25,6 +29,8 @@ inline fun <reified T> jsonConfig(configPath: File, default: T): DelegateJsonCon
 fun jsonConfig(configFile: File): JsonConfig =
   JsonConfig(configFile)
 
+lateinit var webinterface: WebInterface
+
 class WebInterface {
   private var jsonConfig by jsonConfig(
     File("config.json"),
@@ -35,6 +41,9 @@ class WebInterface {
   )
   private val baseHtmlFile: String = String(JavalinServer::class.java.getResourceAsStream("/index.html")?.readBytes()!!)
   private var driver = MongoDriver("localhost", 27017)
+  private val executor = Executors.newSingleThreadExecutor()
+
+  val commandRepository = CommandRepository()
 
   private val app = Javalin.create().routes {
     // Default endpoint
@@ -76,7 +85,9 @@ class WebInterface {
   }
 
   fun start() {
+    webinterface = this
     app.start(jsonConfig.port)
+    executor.submit { CommandDispatcher().run() }
   }
 }
 
