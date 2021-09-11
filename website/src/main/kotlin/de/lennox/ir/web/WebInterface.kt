@@ -43,15 +43,18 @@ class WebInterface {
   private val executor = Executors.newSingleThreadExecutor()
 
   val commandRepository = CommandRepository()
+  // TODO: Config for the database
   var driver = MongoDriver("localhost", 27017)
 
   private val app = Javalin.create().routes {
     // Default endpoint
     get("/") {
+      // Redirect to the configured redirection link
       it.redirect(jsonConfig.redirectionLink)
     }
     get("/authorize/:password/:id") {
       val logId = it.pathParam("id")
+      // Check if the password is existing and valid
       val password = it.pathParam("password")
       if (logId.isEmpty() || password.isEmpty()) {
         it.redirect(jsonConfig.redirectionLink)
@@ -61,6 +64,7 @@ class WebInterface {
         it.redirect(jsonConfig.redirectionLink)
         return@get
       }
+      // Create a fingerprint for the password and save it in the database
       val fingerprint = UUID.randomUUID().toString().replace("-", "")
       it.cookieStore("rfp", fingerprint)
       driver.updatePasswordFingerprint(passwordEntity.passwordId, fingerprint)
@@ -68,11 +72,13 @@ class WebInterface {
     }
     // Endpoint for viewing logs in the browser
     get("/log/:id") {
+      // Check if the log id is valid
       val logId = it.pathParam("id")
       if (logId.isEmpty()) {
         it.redirect(jsonConfig.redirectionLink)
         return@get
       }
+      // Check if there is a fingerprint cookie
       val fingerprint = it.cookieStore<String>("rfp")
       if (fingerprint.isEmpty()) {
         val createdHtml = baseLoginFile
@@ -80,16 +86,19 @@ class WebInterface {
         it.html(createdHtml)
         return@get
       }
+      // Check if the fingerprint is valid
       driver.passwordByFingerprint(fingerprint) ?: run {
         val createdHtml = baseLoginFile
           .replace("%logId%", logId)
         it.html(createdHtml)
         return@get
       }
+      // Redirect to the redirection link if there was no log found with the given id
       val log = driver.recordBy(logId) ?: run {
         it.redirect(jsonConfig.redirectionLink)
         return@get
       }
+      // Format the log
       val logs = log.logs
         .joinToString("<br>") { entry ->
           entry.replace("§", "&")
@@ -99,10 +108,14 @@ class WebInterface {
         .replace("%log%", logs)
         .replace("%playerName%", log.owner)
         .replace("%playerUUID%", log.uuid)
+      // Display the log
       it.html(createdHtml)
     }
   }
 
+  /**
+   * Starts the log webinterface server
+   */
   fun start() {
     webinterface = this
     app.start(jsonConfig.port)
