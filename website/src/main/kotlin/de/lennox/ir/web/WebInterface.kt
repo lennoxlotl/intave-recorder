@@ -1,6 +1,5 @@
 package de.lennox.ir.web
 
-
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import de.lennox.ir.mongodb.MongoDriver
@@ -14,7 +13,6 @@ import io.javalin.core.JavalinServer
 import java.io.File
 import java.util.*
 import java.util.concurrent.Executors
-
 
 val gson: Gson = GsonBuilder()
   .setPrettyPrinting()

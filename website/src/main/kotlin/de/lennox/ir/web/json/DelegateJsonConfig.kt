@@ -19,6 +19,7 @@ class DelegateJsonConfig<T>(
     t: Any?,
     property: KProperty<*>
   ): T {
+    // Return the parsed object
     return parsedConfigObject
   }
 
@@ -27,8 +28,8 @@ class DelegateJsonConfig<T>(
     property: KProperty<*>,
     t1: T
   ) {
+    // Save the json object
     jsonConfig.save(t1)
     parsedConfigObject = t1
   }
-
 }
