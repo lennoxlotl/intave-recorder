@@ -11,31 +11,31 @@ import org.bukkit.plugin.java.JavaPlugin
 lateinit var plugin: IRPlugin;
 
 class IRPlugin : JavaPlugin() {
-  lateinit var driver: Driver
+    lateinit var driver: Driver
 
-  override fun onEnable() {
-    println("Enabling Intave Recorder")
-    plugin = this
-    // Register all necessary objects
-    registerEvents()
-    registerCommands()
-    // Initialize the driver
-    // TODO: Config for the driver
-    driver = MongoDriver("localhost", 27017)
-  }
+    override fun onEnable() {
+        println("Enabling Intave Recorder")
+        plugin = this
+        // Register all necessary objects
+        registerEvents()
+        registerCommands()
+        // Initialize the driver
+        // TODO: Config for the driver
+        driver = MongoDriver("localhost", 27017)
+    }
 
-  private fun registerEvents() {
-    // Register all events in the Bukkit API
-    EventRegistry.registerEventsIn(
-      IntaveViolationCache(),
-      IntaveAccessListener()
-    )
-  }
+    private fun registerEvents() {
+        // Register all events in the Bukkit API
+        EventRegistry.registerEventsIn(
+            IntaveViolationCache(),
+            IntaveAccessListener()
+        )
+    }
 
-  private fun registerCommands() {
-    // Register all commands in the Bukkit API
-    CommandRegistry.registerCommands(
-      RecorderCommand()
-    )
-  }
+    private fun registerCommands() {
+        // Register all commands in the Bukkit API
+        CommandRegistry.registerCommands(
+            RecorderCommand()
+        )
+    }
 }

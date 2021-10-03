@@ -7,21 +7,21 @@ import de.lennox.ir.mongodb.StringConverter
 import org.bson.conversions.Bson
 
 class RecordQuery(
-  private val type: RecordQueryType,
-  private val obj: Any
-): Query {
-  override fun updateQuery(): Bson {
-    return Updates.set(type.type, type.converter.convert(obj))
-  }
+    private val type: RecordQueryType,
+    private val obj: Any
+) : Query {
+    override fun updateQuery(): Bson {
+        return Updates.set(type.type, type.converter.convert(obj))
+    }
 
-  override fun findQuery(): Bson {
-    return Filters.eq(type.type, type.converter.convert(obj))
-  }
+    override fun findQuery(): Bson {
+        return Filters.eq(type.type, type.converter.convert(obj))
+    }
 }
 
 enum class RecordQueryType(
-  val type: String,
-  val converter: Converter<*>
+    val type: String,
+    val converter: Converter<*>
 ) {
-  RECORD_ID("recordId", StringConverter())
+    RECORD_ID("recordId", StringConverter())
 }
